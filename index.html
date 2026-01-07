@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마우스 연습 통합 메인메뉴</title>
+    <style>
+        :root {
+            --bg: #f0f2f5;
+            --primary: #6c5ce7;
+            --text: #2d3436;
+        }
+
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            cursor: default; /* 일반 화살표 */
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--text);
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text);
+            transition: transform 0.2s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+        }
+
+        /* 사진 속 원형 아이콘 스타일 */
+        .icon-circle {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border: 2px solid #dfe6e9;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover .icon-circle {
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2);
+        }
+
+        .menu-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .menu-desc {
+            font-size: 0.9rem;
+            color: #636e72;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>미사1동 기초반 여러분 환영합니다!</h1>
+        <div class="menu-grid">
+            <a href="flip.html" class="menu-item">
+    <div class="icon-circle">🎁</div>
+    <span class="menu-title">보물찾기</span>
+    <span class="menu-desc">(클릭 뒤집기)</span>
+</a>
+
+<a href="double.html" class="menu-item">
+    <div class="icon-circle">🐶</div>
+    <span class="menu-title">더블클릭 동물</span>
+</a>
+
+<a href="drag.html" class="menu-item">
+    <div class="icon-circle">🍀</div>
+    <span class="menu-title">드래그 연습</span>
+</a>
+<a href="scroll.html" class="menu-item">
+    <div class="icon-circle">🖱️</div>
+    <span class="menu-title">천천히 스크롤하기</span>
+    <span class="menu-desc">(휠 연습)</span>
+</a>
+<a href="master.html" class="menu-item">
+    <div class="icon-circle">❤️</div>
+    <span class="menu-title">마우스 마스터</span>
+</a>
+  
+  <a href="order.html" class="menu-item">
+    <div class="icon-circle">☕</div> <span class="menu-title">키오스크 주문</span>
+  </a>
+</div>         
+
+        </div>
+    </div>
+
+</body>
+</html>
