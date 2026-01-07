@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>단계별 스크롤 연습</title>
+
+<style>
+body {
+    font-family: 'Malgun Gothic', sans-serif;
+    background: #f4f7fb;
+    margin: 0;
+    text-align: center;
+    font-size: 20px;
+}
+
+h1 {
+    margin: 30px 0 10px;
+    font-size: 2.4rem;
+}
+
+.info {
+    background: #e3f2fd;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px auto;
+    width: 80%;
+    font-size: 1.3rem;
+    line-height: 1.8;
+}
+
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+/* 스크롤 박스 */
+.scroll-box {
+    width: 85%;
+    height: 320px;
+    margin: 0 auto;
+    border: 5px solid #74b9ff;
+    border-radius: 25px;
+    overflow: auto;
+    background: white;
+}
+
+/* 세로 콘텐츠 */
+.v-content {
+    height: 900px;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.v-icon {
+    font-size: 4rem;
+    margin: 60px 0;
+}
+
+/* 가로 콘텐츠 */
+.h-content {
+    width: 1400px;
+    height: 250px;
+    padding: 40px;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.h-icon {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    margin-right: 40px;
+    border-radius: 30px;
+    background: #6c5ce7;
+    color: white;
+    font-size: 4rem;
+    line-height: 200px;
+}
+
+/* 성공 메시지 */
+.success {
+    margin: 30px;
+    font-size: 1.6rem;
+    color: #2d6a4f;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🖱️ 단계별 스크롤 연습</h1>
+
+<!-- ================= 1단계 ================= -->
+<div class="step active" id="step1">
+
+    <div class="info">
+        ① 마우스 휠을 굴려서<br>
+        <b>아래로 내려갔다가</b><br>
+        다시 <b>위로</b> 올라와 보세요 🙂
+    </div>
+
+    <div class="scroll-box" id="boxV" onscroll="checkVertical()">
+        <div class="v-content">
+            <div class="v-icon">⬇️</div>
+            <div class="v-icon">🌸</div>
+            <div class="v-icon">🌼</div>
+            <div class="v-icon">🌻</div>
+            <div class="v-icon">⬆️</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ================= 2단계 ================= -->
+<div class="step" id="step2">
+
+    <div class="info">
+        ② 이번에는 <b>Shift 키</b>를 누르고<br>
+        마우스 휠을 굴려서<br>
+        <b>오른쪽 끝</b>까지 이동해 보세요 🙂
+    </div>
+
+    <div class="scroll-box" id="boxH" onscroll="checkHorizontal()">
+        <div class="h-content">
+            <div class="h-icon">🚗</div>
+            <div class="h-icon">🏠</div>
+            <div class="h-icon">🌳</div>
+            <div class="h-icon">🐶</div>
+            <div class="h-icon">🎁</div>
+            <div class="h-icon">⭐</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="success" id="done" style="display:none;">
+👏 상·하 · 좌·우 스크롤을 모두 성공하셨습니다!
+</div>
+
+
+<script>
+let downOK = false;
+let upOK = false;
+
+function checkVertical() {
+    const box = document.getElementById('boxV');
+
+    if (box.scrollTop + box.clientHeight >= box.scrollHeight - 5) {
+        downOK = true;
+    }
+
+    if (downOK && box.scrollTop === 0) {
+        document.getElementById('step1').classList.remove('active');
+        document.getElementById('step2').classList.add('active');
+    }
+}
+
+function checkHorizontal() {
+    const box = document.getElementById('boxH');
+
+    if (box.scrollLeft + box.clientWidth >= box.scrollWidth - 5) {
+        document.getElementById('step2').classList.remove('active');
+        document.getElementById('done').style.display = 'block';
+    }
+}
+</script>
+<a href="index.html" style="
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 18px;
+    background: #6c5ce7;
+    color: white;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+">
+🏠 메인으로
+</a>
+
+</body>
+</html>

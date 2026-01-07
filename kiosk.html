@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>카페 키오스크 연습</title>
+<style>
+body{
+  font-family:'Malgun Gothic',sans-serif;
+  background:#f2f4f7;margin:0;font-size:20px;
+}
+.screen{display:none;padding:20px;}
+.screen.active{display:block;}
+h1{text-align:center;font-size:2.3rem;}
+
+.btn{
+  background:#2d6a4f;color:white;
+  padding:22px;border-radius:20px;
+  font-size:1.5rem;width:70%;
+  margin:20px auto;text-align:center;
+  cursor:pointer;
+}
+.btn.gray{background:#6c757d;}
+
+.menu{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+}
+.item{
+  background:white;border-radius:20px;padding:20px;
+  text-align:center;cursor:pointer;
+}
+.item span{font-size:4rem;}
+
+.box{
+  background:white;border-radius:20px;
+  padding:20px;margin-bottom:15px;
+}
+
+/* 옵션 */
+.opt{
+  background:#dee2e6;border-radius:15px;
+  padding:15px;margin:10px 0;text-align:center;
+  cursor:pointer;font-size:1.3rem;
+}
+.opt.selected{
+  background:#2d6a4f;
+  color:white;
+  font-weight:bold;
+}
+
+.row{
+  display:flex;justify-content:space-between;align-items:center;
+  margin:10px 0;
+}
+.qbtn{
+  background:#ced4da;border-radius:10px;
+  padding:6px 12px;cursor:pointer;
+}
+
+.money{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+}
+.bill{
+  background:#495057;color:white;
+  padding:15px 20px;border-radius:15px;
+  cursor:pointer;
+}
+
+.total{text-align:center;font-size:1.6rem;margin:15px 0;}
+.success{text-align:center;font-size:1.6rem;color:#2d6a4f;}
+</style>
+</head>
+
+<body>
+
+<!-- 시작 -->
+<div class="screen active" id="start">
+  <h1>☕ 카페 키오스크 연습</h1>
+  <div class="btn" onclick="go('menu')">주문 시작</div>
+</div>
+
+<!-- 메뉴 -->
+<div class="screen" id="menu">
+  <h1>메뉴 선택</h1>
+  <div class="menu">
+    <div class="item" onclick="selectMenu('아메리카노',3000)">
+      <span>☕</span><br>아메리카노<br>3,000원
+    </div>
+    <div class="item" onclick="selectMenu('카페라떼',3500)">
+      <span>🥛</span><br>카페라떼<br>3,500원
+    </div>
+    <div class="item" onclick="selectMenu('바닐라라떼',4000)">
+      <span>🍦</span><br>바닐라라떼<br>4,000원
+    </div>
+    <div class="item" onclick="selectMenu('핫초코',3500)">
+      <span>🍫</span><br>핫초코<br>3,500원
+    </div>
+  </div>
+</div>
+
+<!-- 옵션 -->
+<div class="screen" id="option">
+  <h1>옵션 선택</h1>
+
+  <div class="box" id="sizeBox">
+    <b>사이즈</b>
+    <div class="opt" onclick="setSize(this,'Small')">Small</div>
+    <div class="opt" onclick="setSize(this,'Regular')">Regular</div>
+    <div class="opt" onclick="setSize(this,'Large')">Large (+1,000원)</div>
+  </div>
+
+  <div class="box" id="sugarBox">
+    <b>당도</b>
+    <div class="opt" onclick="setSugar(this,'0%')">0%</div>
+    <div class="opt" onclick="setSugar(this,'50%')">50%</div>
+    <div class="opt" onclick="setSugar(this,'100%')">100%</div>
+  </div>
+
+  <div class="btn" onclick="addItem()">담기</div>
+  <div class="btn gray" onclick="go('cart')">장바구니로 이동</div>
+</div>
+
+<!-- 장바구니 -->
+<div class="screen" id="cart">
+  <h1>주문 내역</h1>
+  <div class="box" id="cartList"></div>
+  <div class="total">합계: <b><span id="sum">0</span>원</b></div>
+  <div class="btn" onclick="go('paySelect')">결제하기</div>
+</div>
+
+<!-- 결제 선택 -->
+<div class="screen" id="paySelect">
+  <h1>결제 방법 선택</h1>
+  <div class="btn" onclick="go('card')">💳 카드 결제</div>
+  <div class="btn gray" onclick="go('cash')">💵 현금 결제</div>
+</div>
+
+<!-- 카드 -->
+<div class="screen" id="card">
+  <h1>카드 결제</h1>
+  <div class="success">카드를 넣어주세요</div>
+  <div class="btn" onclick="go('done')">결제 완료</div>
+</div>
+
+<!-- 현금 -->
+<div class="screen" id="cash">
+  <h1>현금 넣기</h1>
+  <div class="money">
+    <div class="bill" onclick="pay(1000)">1,000원</div>
+    <div class="bill" onclick="pay(5000)">5,000원</div>
+    <div class="bill" onclick="pay(10000)">10,000원</div>
+  </div>
+  <div class="total">낸 돈: <b><span id="paid">0</span>원</b></div>
+</div>
+
+<!-- 잔돈 -->
+<div class="screen" id="change">
+  <h1>잔돈 받기</h1>
+  <div class="money" id="changeBtns"></div>
+  <div class="total">받은 잔돈: <b><span id="got">0</span>원</b></div>
+</div>
+
+<!-- 완료 -->
+<div class="screen" id="done">
+  <h1>주문 완료</h1>
+  <div class="success">감사합니다 😊</div>
+  <div class="btn" onclick="reset()">다시 주문</div>
+</div>
+
+<script>
+let cart=[], menu='', base=0, size='', sugar='';
+let sum=0, paid=0, got=0, change=0;
+
+function go(id){
+  document.querySelector('.screen.active').classList.remove('active');
+  document.getElementById(id).classList.add('active');
+}
+
+function selectMenu(m,p){
+  menu=m;base=p;size='';sugar='';
+  clearSelect();
+  go('option');
+}
+
+/* ✅ 각 그룹별로만 선택 처리 */
+function setSize(el,v){
+  size=v;
+  document.querySelectorAll('#sizeBox .opt')
+    .forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function setSugar(el,v){
+  sugar=v;
+  document.querySelectorAll('#sugarBox .opt')
+    .forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function clearSelect(){
+  document.querySelectorAll('.opt')
+    .forEach(o=>o.classList.remove('selected'));
+}
+
+function addItem(){
+  if(!size || !sugar){
+    alert('사이즈와 당도를 모두 선택해주세요');
+    return;
+  }
+  let price=base+(size==='Large'?1000:0);
+  cart.push({menu,size,sugar,price,qty:1});
+  renderCart();
+  clearSelect();
+}
+
+function renderCart(){
+  sum=0;
+  let html='';
+  cart.forEach((i,idx)=>{
+    sum+=i.price*i.qty;
+    html+=`
+      <div class="row">
+        ${i.menu} (${i.size}/${i.sugar})
+        <div>
+          <span class="qbtn" onclick="chg(${idx},-1)">➖</span>
+          ${i.qty}
+          <span class="qbtn" onclick="chg(${idx},1)">➕</span>
+        </div>
+      </div>`;
+  });
+  document.getElementById('cartList').innerHTML=html||'선택한 메뉴가 없습니다';
+  document.getElementById('sum').innerText=sum;
+}
+
+function chg(i,d){
+  cart[i].qty+=d;
+  if(cart[i].qty<=0) cart.splice(i,1);
+  renderCart();
+}
+
+function pay(m){
+  paid+=m;
+  document.getElementById('paid').innerText=paid;
+  if(paid>=sum){
+    change=paid-sum;
+    showChange();
+    go('change');
+  }
+}
+
+function showChange(){
+  let html='';
+  if(change>=1000) html+=`<div class="bill" onclick="getC(1000)">1,000원</div>`;
+  if(change>=500) html+=`<div class="bill" onclick="getC(500)">500원</div>`;
+  document.getElementById('changeBtns').innerHTML=html;
+}
+
+function getC(m){
+  if(got+m>change) return;
+  got+=m;
+  document.getElementById('got').innerText=got;
+  if(got===change) go('done');
+}
+
+function reset(){
+  cart=[];sum=paid=got=change=0;
+  document.getElementById('paid').innerText=0;
+  document.getElementById('got').innerText=0;
+  clearSelect();
+  go('start');
+}
+</script>
+
+</body>
+</html>
